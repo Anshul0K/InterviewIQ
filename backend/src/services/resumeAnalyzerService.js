@@ -20,8 +20,8 @@ Resume:
 ${resumeText}
 `;
   const response = await llm.invoke(prompt);
-  console.log("GEMINI RESPONSE:");
-  console.log(response.content);
+  // console.log("GEMINI RESPONSE:");
+  // console.log(response.content);
 
   try {
     const cleanedResponse = response.content
