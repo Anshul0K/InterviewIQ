@@ -1,4 +1,6 @@
 const Resume = require("../models/Resume");
+const parsePDF = require("../utils/pdfParser");
+const analyzeResume = require("../services/resumeAnalyzerService");
 
 const uploadResume = async (req, res) => {
   try {
@@ -9,16 +11,22 @@ const uploadResume = async (req, res) => {
       });
     }
 
+    const parsedText = await parsePDF(req.file.path);
+
+    const analysis = await analyzeResume(parsedText);
+
     const resume = await Resume.create({
       user: req.user._id,
       originalName: req.file.originalname,
       fileName: req.file.filename,
       filePath: req.file.path,
+      parsedText,
+      analysis,
     });
 
     res.status(201).json({
       success: true,
-      message: "Resume uploaded successfully",
+      message: "Resume uploaded and analyzed successfully",
       resume,
     });
   } catch (error) {

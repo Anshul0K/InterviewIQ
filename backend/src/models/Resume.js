@@ -22,6 +22,33 @@ const resumeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    parsedText: {
+      type: String,
+      default: "",
+    },
+
+    analysis: {
+      skills: {
+        type: [String],
+        default: [],
+      },
+
+      strengths: {
+        type: [String],
+        default: [],
+      },
+
+      weaknesses: {
+        type: [String],
+        default: [],
+      },
+
+      summary: {
+        type: String,
+        default: "",
+      },
+    },
   },
   {
     timestamps: true,
