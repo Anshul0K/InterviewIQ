@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
-const testRoutes = require("./routes/testRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
 
 
@@ -25,7 +24,6 @@ app.use("/api/resumes", resumeRoutes);
 
 app.use("/api/interviews", interviewRoutes);
 
-app.use("/api/test", testRoutes);
 
 app.get("/", (req, res) => {
   res.json({
