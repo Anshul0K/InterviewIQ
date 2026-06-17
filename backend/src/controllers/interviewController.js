@@ -221,8 +221,129 @@ const getInterviewReport = async (req, res) => {
   }
 };
 
+
+const getInterviews = async (req, res) => {
+  try {
+
+    const interviews = await Interview.find({
+      user: req.user._id,
+    })
+      .select(
+        "role difficulty overallScore status createdAt"
+      )
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      interviews,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const getInterviewById = async (req, res) => {
+  try {
+
+    const { interviewId } = req.params;
+
+    const interview = await Interview.findById(
+      interviewId
+    );
+
+    if (!interview) {
+      return res.status(404).json({
+        success: false,
+        message: "Interview not found",
+      });
+    }
+
+    if (
+      interview.user.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      interview,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const deleteInterview = async (req, res) => {
+  try {
+
+    const { interviewId } = req.params;
+
+    const interview =
+      await Interview.findById(
+        interviewId
+      );
+
+    if (!interview) {
+      return res.status(404).json({
+        success: false,
+        message: "Interview not found",
+      });
+    }
+
+    if (
+      interview.user.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    await Interview.findByIdAndDelete(
+      interviewId
+    );
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Interview deleted successfully",
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 module.exports = {
   generateInterview,
   answerQuestion,
   getInterviewReport,
+  getInterviews,
+  getInterviewById,
+  deleteInterview,
 };

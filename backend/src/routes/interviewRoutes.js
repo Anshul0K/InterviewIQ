@@ -4,6 +4,9 @@ const{
     generateInterview,
     answerQuestion,
     getInterviewReport,
+    getInterviews,
+    getInterviewById,
+    deleteInterview,
 } = require("../controllers/interviewController");
 
 
@@ -27,9 +30,27 @@ router.post(
 );
 
 router.get(
+  "/:interviewId",
+  protect,
+  getInterviewById
+);
+
+router.get(
   "/:interviewId/report",
   protect,
   getInterviewReport
+);
+
+router.get(
+  "/",
+  protect,
+  getInterviews
+);
+
+router.delete(
+  "/:interviewId",
+  protect,
+  deleteInterview
 );
 
 module.exports = router;

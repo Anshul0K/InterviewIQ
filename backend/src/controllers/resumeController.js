@@ -39,6 +39,125 @@ const uploadResume = async (req, res) => {
   }
 };
 
+const getResumes = async (req, res) => {
+  try {
+
+    const resumes = await Resume.find({
+      user: req.user._id,
+    })
+      .select(
+        "originalName analysis createdAt"
+      )
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      resumes,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const getResumeById = async (req, res) => {
+  try {
+
+    const { resumeId } = req.params;
+
+    const resume = await Resume.findById(
+      resumeId
+    );
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    if (
+      resume.user.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      resume,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const deleteResume = async (req, res) => {
+  try {
+
+    const { resumeId } = req.params;
+
+    const resume = await Resume.findById(
+      resumeId
+    );
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    if (
+      resume.user.toString() !==
+      req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    await Resume.findByIdAndDelete(
+      resumeId
+    );
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Resume deleted successfully",
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 module.exports = {
   uploadResume,
+  getResumes,
+  getResumeById,
+  deleteResume,
 };
