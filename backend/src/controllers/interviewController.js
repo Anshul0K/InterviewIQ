@@ -114,10 +114,9 @@ const answerQuestion = async (req, res) => {
       );
 
     question.userAnswer = answer;
-    question.feedback =
-      evaluation.feedback;
-    question.score =
-      evaluation.score;
+    question.feedback = evaluation.feedback;
+    question.score = evaluation.score;
+    interview.status = "In Progress";
 
     await interview.save();
 
@@ -166,6 +165,39 @@ const getInterviewReport = async (req, res) => {
         0
       );
 
+      if (
+        interview.report &&
+        interview.report.overallFeedback
+      ) {
+        return res.status(200).json({
+          success: true,
+
+          report: {
+            overallScore:
+              interview.overallScore,
+
+            totalQuestions,
+            answeredQuestions,
+
+            strongAreas:
+              interview.report
+                .strongAreas,
+
+            weakAreas:
+              interview.report
+                .weakAreas,
+
+            recommendations:
+              interview.report
+                .recommendations,
+
+            overallFeedback:
+              interview.report
+                .overallFeedback,
+          },
+        });
+      }
+
     const overallScore =
       totalQuestions > 0
         ? Number(
@@ -180,13 +212,26 @@ const getInterviewReport = async (req, res) => {
         interview.questions
       );
 
-    interview.overallScore =
-      overallScore;
+    interview.overallScore = overallScore;
 
-    interview.overallFeedback =
-      report.overallFeedback;
+    interview.report = {
+      strongAreas:
+        report.strongAreas,
 
-    await interview.save();
+      weakAreas:
+        report.weakAreas,
+
+      recommendations:
+        report.recommendations,
+
+      overallFeedback:
+        report.overallFeedback,
+    };
+
+    interview.status =
+      "Completed";
+
+    await interview.save();;
 
     res.status(200).json({
       success: true,

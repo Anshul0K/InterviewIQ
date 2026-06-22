@@ -1,7 +1,7 @@
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
 require('dotenv').config();
 const llm = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash",
+  model: "gemini-3.1-flash-lite",
   apiKey: process.env.GEMINI_API_KEY,
   temperature: 0.3,
 });

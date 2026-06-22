@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+
+
+
 const questionSchema = new mongoose.Schema(
   {
     question: {
@@ -70,9 +73,26 @@ const interviewSchema = new mongoose.Schema(
       default: 0,
     },
 
-    overallFeedback: {
-      type: String,
-      default: "",
+    report: {
+      strongAreas: {
+        type: [String],
+        default: [],
+      },
+
+      weakAreas: {
+        type: [String],
+        default: [],
+      },
+
+      recommendations: {
+        type: [String],
+        default: [],
+      },
+
+      overallFeedback: {
+        type: String,
+        default: "",
+      },
     },
   },
   {
