@@ -7,5 +7,3 @@ frontend/dist/
 
 backend/.env
 frontend/.env
-
-backend/uploads/.gitkeep
