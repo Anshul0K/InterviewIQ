@@ -222,7 +222,7 @@ InterviewIQ
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/interviewiq.git
+git clone https://github.com/Anshul0K/InterviewIQ.git
 
 cd interviewiq
 ```
@@ -383,8 +383,6 @@ GET /api/interviews/:interviewId/report
 # 👨‍💻 Author
 
 **Anshul Kumar**
-
-B.Tech CSAI
 
 Full Stack Developer | AI Enthusiast
 
