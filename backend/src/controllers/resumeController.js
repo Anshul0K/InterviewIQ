@@ -1,6 +1,7 @@
 const Resume = require("../models/Resume");
 const parsePDF = require("../utils/pdfParser");
 const analyzeResume = require("../services/resumeAnalyzerService");
+const fs = require("fs");
 
 const uploadResume = async (req, res) => {
   try {
@@ -14,6 +15,8 @@ const uploadResume = async (req, res) => {
     const parsedText = await parsePDF(req.file.path);
 
     const analysis = await analyzeResume(parsedText);
+
+    fs.unlinkSync(req.file.path);
 
     const resume = await Resume.create({
       user: req.user._id,
