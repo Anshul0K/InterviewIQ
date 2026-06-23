@@ -58,14 +58,20 @@ const DashboardPage = () => {
 
 
 
+  const completedInterviews =
+    interviews.filter(
+      (interview) =>
+        interview.status === "Completed"
+    );
+
   const averageScore =
-    interviews.length > 0
+    completedInterviews.length > 0
       ? (
-          interviews.reduce(
+          completedInterviews.reduce(
             (sum, interview) =>
-              sum + interview.overallScore,
+              sum + (interview.overallScore || 0),
             0
-          ) / interviews.length
+          ) / completedInterviews.length
         ).toFixed(1)
       : 0;
 
@@ -148,7 +154,12 @@ const DashboardPage = () => {
           </h3>
 
           <p className="text-3xl font-bold mt-2">
-            {interviews.length}
+            {
+              interviews.filter(
+                (interview) =>
+                  interview.status === "Completed"
+              ).length
+            }
           </p>
         </div>
 
@@ -281,9 +292,15 @@ const DashboardPage = () => {
                 {interviews[0].role}
               </p>
 
-              <p className="text-sm text-green-600 mt-2">
-                Score: {interviews[0].overallScore}%
-              </p>
+              {interviews[0].status === "Completed" ? (
+                <p className="text-sm text-green-600 mt-2">
+                  Score: {interviews[0].overallScore}%
+                </p>
+              ) : (
+                <p className="text-sm text-yellow-600 mt-2">
+                  Status: {interviews[0].status}
+                </p>
+              )}
             </div>
           )}
 

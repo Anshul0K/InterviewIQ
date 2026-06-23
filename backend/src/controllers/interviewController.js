@@ -202,7 +202,9 @@ const getInterviewReport = async (req, res) => {
       totalQuestions > 0
         ? Number(
             (
-              totalScore / totalQuestions
+              (totalScore /
+                (totalQuestions * 10)) *
+              100
             ).toFixed(1)
           )
         : 0;
